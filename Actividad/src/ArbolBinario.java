@@ -1,14 +1,30 @@
+/**
+ * Clase que implementa la estructura de un arbol binario de busqueda para gestionar empleados.
+ */
 public class ArbolBinario {
     public Nodo raiz;
 
+    /**
+     * Constructor para inicializar el arbol binario vacio.
+     */
     public ArbolBinario() {
         this.raiz = null;
     }
 
+    /**
+     * Inserta un nuevo empleado en el arbol basandose en su ID.
+     * @param Data El objeto Empleado a insertar.
+     */
     public void insertar(Empleado Data) {
         this.raiz = insertarRec(this.raiz, Data);
     }
 
+    /**
+     * Metodo auxiliar recursivo para encontrar la posicion de insercion.
+     * @param root El nodo actual en la recursion.
+     * @param Data El objeto Empleado a insertar.
+     * @return El nodo actual despues de la insercion.
+     */
     private Nodo insertarRec(Nodo root, Empleado Data) {
         if (root == null) {
             root = new Nodo(Data);
@@ -24,10 +40,21 @@ public class ArbolBinario {
         return root;
     }
 
+    /**
+     * Busca un empleado en el arbol por su ID.
+     * @param id El ID del empleado a buscar.
+     * @return El objeto Empleado si se encuentra, de lo contrario null.
+     */
     public Empleado buscar(int id) {
         return buscarRec(this.raiz, id);
     }
 
+    /**
+     * Metodo auxiliar recursivo para realizar la busqueda en el arbol.
+     * @param root El nodo actual en la busqueda.
+     * @param id El ID a buscar.
+     * @return El objeto Empleado encontrado o null.
+     */
     private Empleado buscarRec(Nodo root, int id) {
         if (root == null) {
             return null;
@@ -42,6 +69,10 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Realiza un recorrido Preorden del arbol y muestra los elementos.
+     * (Raiz, Izquierda, Derecha)
+     */
     public void recorridoPreorden() {
         recorridoPreordenRec(this.raiz);
     }
@@ -53,6 +84,10 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Realiza un recorrido Inorden del arbol y muestra los elementos.
+     * (Izquierda, Raiz, Derecha)
+     */
     public void recorridoInorden() {
         recorridoInordenRec(this.raiz);
     }
@@ -64,6 +99,10 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Realiza un recorrido Postorden del arbol y muestra los elementos.
+     * (Izquierda, Derecha, Raiz)
+     */
     public void recorridoPostorden() {
         recorridoPostordenRec(this.raiz);
     }
@@ -75,10 +114,20 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Elimina un empleado del arbol por su ID.
+     * @param id El ID del empleado a eliminar.
+     */
     public void eliminar(int id) {
         this.raiz = eliminarRec(this.raiz, id);
     }
 
+    /**
+     * Metodo auxiliar recursivo para eliminar un nodo del arbol.
+     * @param root El nodo actual.
+     * @param id El ID del empleado a eliminar.
+     * @return El nodo resultante despues de la eliminacion.
+     */
     private Nodo eliminarRec(Nodo root, int id) {
         if (root == null) {
             return root;
@@ -89,12 +138,14 @@ public class ArbolBinario {
         } else if (id > root.Data.getID()) {
             root.derecho = eliminarRec(root.derecho, id);
         } else {
+            // Nodo con un solo hijo o sin hijos
             if (root.izquierdo == null) {
                 return root.derecho;
             } else if (root.derecho == null) {
                 return root.izquierdo;
             }
 
+            // Nodo con dos hijos
             Nodo temp = findMin(root.derecho);
             root.Data = temp.Data;
             root.derecho = eliminarRec(root.derecho, temp.Data.getID());
@@ -102,6 +153,12 @@ public class ArbolBinario {
         return root;
     }
 
+    /**
+     * Encuentra el nodo con el valor mas pequeno en un subarbol.
+     * Es un metodo auxiliar para el proceso de eliminacion.
+     * @param node La raiz del subarbol.
+     * @return El nodo con el valor minimo.
+     */
     private Nodo findMin(Nodo node) {
         while (node.izquierdo != null) {
             node = node.izquierdo;

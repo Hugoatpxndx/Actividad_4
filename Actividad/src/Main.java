@@ -1,12 +1,25 @@
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+/**
+ * Clase principal que gestiona la creacion de los datos, la demostracion de las operaciones
+ * del arbol binario y la comparacion de rendimiento con una busqueda secuencial.
+ */
 public class Main {
 
+    /**
+     * Realiza una busqueda secuencial en una lista de empleados.
+     * Este metodo se utiliza para comparar el rendimiento con el arbol binario.
+     * @param arreglo La lista de empleados a buscar.
+     * @param id El ID del empleado a encontrar.
+     * @return El objeto Empleado si se encuentra, de lo contrario null.
+     */
     public static Empleado buscarEnArreglo(List<Empleado> arreglo, int id) {
         for (Empleado empleado : arreglo) {
             if (empleado.getID() == id) {
@@ -16,20 +29,24 @@ public class Main {
         return null;
     }
 
+    /**
+     * Metodo principal que coordina todas las operaciones del programa.
+     * Genera los empleados, los inserta en el arbol y el arreglo,
+     * y realiza las demostraciones de busqueda, recorridos y eliminacion.
+     * Ademas, redirige la salida a un archivo de logs.
+     * @param args Argumentos de la linea de comandos (no se usan en este programa).
+     */
     public static void main(String[] args) {
         try {
-            // Crea un nuevo archivo de salida para los logs
             File logFile = new File("logs.txt");
             FileOutputStream fos = new FileOutputStream(logFile);
             PrintStream ps = new PrintStream(fos);
-
-            // Guarda la salida original de la consola
             PrintStream originalOut = System.out;
-
-            // Redirige la salida estándar a tu archivo
             System.setOut(ps);
 
-            // --- AQUI VA EL CONTENIDO DEL MAIN ---
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println("LOG GENERADO EL: " + sdf.format(new Date()));
+            System.out.println("----------------------------------------------");
 
             ArbolBinario arbolEmpleados = new ArbolBinario();
             List<Empleado> arregloEmpleados = new ArrayList<>();
@@ -53,7 +70,6 @@ public class Main {
 
             System.out.println("100 empleados generados y almacenados en ambas estructuras.");
 
-            // --- COMPARACION DE RENDIMIENTO ---
             System.out.println("\n--- COMPARANDO RENDIMIENTO DE BUSQUEDA ---");
             int idABuscar = 50;
 
@@ -71,7 +87,6 @@ public class Main {
             System.out.printf("Tiempo de busqueda en arreglo: %.2f ms\n", tiempoArreglo);
             System.out.printf("Tiempo de busqueda en arbol:   %.2f ms\n", tiempoArbol);
 
-            // --- RECORRIDOS DEL ARBOL BINARIO ---
             System.out.println("\n--- RECORRIDOS DEL ARBOL BINARIO ---");
             System.out.println("\nRecorrido Preorden:");
             arbolEmpleados.recorridoPreorden();
@@ -82,7 +97,6 @@ public class Main {
             System.out.println("\nRecorrido Postorden:");
             arbolEmpleados.recorridoPostorden();
 
-            // --- DEMOSTRACION DE ELIMINACION ---
             System.out.println("\n--- DEMOSTRACION DE ELIMINACION ---");
             int idAEliminar = 50;
             System.out.println("Eliminando empleado con ID " + idAEliminar + "...");
@@ -91,7 +105,6 @@ public class Main {
             System.out.println("\nListado de empleados despues de la eliminacion (Inorden):");
             arbolEmpleados.recorridoInorden();
 
-            // --- RESTAURA LA SALIDA DE LA CONSOLA ---
             System.setOut(originalOut);
             System.out.println("\nLa ejecucion ha finalizado. Revisa el archivo 'logs.txt' para ver el resultado.");
 
